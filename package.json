@@ -1,0 +1,21 @@
+{
+  "name": "alumni-connect",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "dev:frontend": "npm run dev --workspace frontend",
+    "dev:backend": "npm run dev --workspace backend",
+    "build": "npm run build --workspace frontend",
+    "check": "npm run check --workspace frontend && npm run check --workspace backend",
+    "start": "npm run start --workspace backend"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
