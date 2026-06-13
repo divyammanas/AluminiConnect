@@ -12,7 +12,7 @@ async function startServer() {
   initializeSocket(httpServer);
 
   httpServer.listen(env.port, () => {
-    console.log(`AlumniConnect API listening on http://localhost:${env.port}`);
+    console.log(`AlumniConnect listening on http://localhost:${env.port}`);
   });
 }
 
@@ -20,4 +20,3 @@ startServer().catch((error) => {
   console.error('Failed to start server', error);
   process.exit(1);
 });
-

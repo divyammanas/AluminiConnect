@@ -52,7 +52,7 @@ Needed in `backend/.env`:
 Local callback URL:
 
 ```text
-http://localhost:5000/api/v1/auth/google/callback
+http://127.0.0.1:5001/api/v1/auth/google/callback
 ```
 
 ### Cloudinary
@@ -114,4 +114,3 @@ After deployment, update:
 - `CLIENT_URL`, `GOOGLE_CALLBACK_URL`, and all backend secrets in Render/AWS
 - Google OAuth authorized origins and redirect URIs
 - Razorpay webhook URL, for example `https://api.example.com/api/v1/payments/webhook`
-

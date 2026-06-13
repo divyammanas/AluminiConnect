@@ -39,8 +39,11 @@ alumniConnect/
    ```
 
 The frontend runs at `http://localhost:5173` and the backend at
-`http://localhost:5000`. The backend health endpoint is
-`http://localhost:5000/api/v1/health`.
+`http://localhost:5001`. The backend health endpoint is
+`http://localhost:5001/api/v1/health`.
+
+For a single production-style URL, run `npm start`. It builds the frontend and
+serves the complete application at `http://localhost:5001`.
 
 ## Useful commands
 
@@ -60,4 +63,3 @@ values belong in `frontend/.env`; all private keys and passwords belong only in
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for feature boundaries and the
 planned API surface.
-
