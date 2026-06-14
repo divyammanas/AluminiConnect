@@ -22,7 +22,8 @@ export const env = Object.freeze({
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
   googleCallbackUrl:
     process.env.GOOGLE_CALLBACK_URL ??
-    'http://127.0.0.1:5001/api/v1/auth/google/callback'
+    'http://127.0.0.1:5001/api/v1/auth/google/callback',
+  firebaseProjectId: process.env.FIREBASE_PROJECT_ID ?? process.env.VITE_FIREBASE_PROJECT_ID ?? 'aluminiconnect-9dada'
 });
 
 export function hasGoogleAuthConfig() {

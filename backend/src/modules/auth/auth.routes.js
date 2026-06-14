@@ -13,6 +13,7 @@ import {
   verifyRefreshToken
 } from './auth.tokens.js';
 import { googleAuthConfigured } from './google.strategy.js';
+import { verifyFirebaseIdToken } from '../../utils/verifyFirebase.js';
 
 export const authRouter = Router();
 
@@ -85,6 +86,52 @@ authRouter.get(
     issueAuthCookies(response, request.user);
     response.redirect(frontendUrl('/auth/callback'));
   }
+);
+
+authRouter.post(
+  '/firebase',
+  asyncHandler(async (request, response) => {
+    const { idToken } = request.body;
+    if (!idToken) throw new ApiError(400, 'Firebase ID token is required');
+
+    let payload;
+    try {
+      payload = await verifyFirebaseIdToken(idToken);
+    } catch (error) {
+      throw new ApiError(401, `Invalid Firebase ID token: ${error.message}`);
+    }
+
+    const email = payload.email?.trim().toLowerCase();
+    if (!email) throw new ApiError(400, 'Firebase ID token did not provide an email address');
+
+    let user = await User.findOne({
+      $or: [{ firebaseUid: payload.sub }, { email }]
+    });
+
+    if (!user) {
+      user = new User({
+        email,
+        name: payload.name || email.split('@')[0],
+        avatarUrl: payload.picture ?? '',
+        firebaseUid: payload.sub,
+        providers: ['firebase'],
+        emailVerified: payload.email_verified ?? true,
+        lastLoginAt: new Date()
+      });
+    } else {
+      user.firebaseUid = user.firebaseUid || payload.sub;
+      user.name = user.name || payload.name;
+      user.avatarUrl = user.avatarUrl || payload.picture || '';
+      user.emailVerified = payload.email_verified ?? true;
+      user.lastLoginAt = new Date();
+      if (!user.providers.includes('firebase')) user.providers.push('firebase');
+    }
+
+    await user.save();
+
+    issueAuthCookies(response, user);
+    response.json({ data: { user: user.toJSON() } });
+  })
 );
 
 authRouter.get('/me', requireAuth, (request, response) => {

@@ -23,9 +23,14 @@ const userSchema = new mongoose.Schema(
       unique: true,
       sparse: true
     },
+    firebaseUid: {
+      type: String,
+      unique: true,
+      sparse: true
+    },
     providers: {
       type: [String],
-      enum: ['google', 'password'],
+      enum: ['google', 'password', 'firebase'],
       default: []
     },
     role: {
@@ -52,6 +57,7 @@ const userSchema = new mongoose.Schema(
         delete value._id;
         delete value.__v;
         delete value.googleId;
+        delete value.firebaseUid;
         return value;
       }
     }
